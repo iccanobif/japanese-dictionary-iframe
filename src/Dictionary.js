@@ -4,11 +4,13 @@ export default function Dictionary(props) {
   const { dictionaryQueryResults } = props;
 
   return (
-    <ul>
-      {dictionaryQueryResults.map((w, i) => (
-        <React.Fragment key={i}>{Word(w, i)}</React.Fragment>
-      ))}
-    </ul>
+    <div id="dictionary">
+      <ul>
+        {dictionaryQueryResults.map((w, i) => (
+          <React.Fragment key={i}>{Word(w, i)}</React.Fragment>
+        ))}
+      </ul>
+    </div>
   );
 }
 
@@ -38,11 +40,11 @@ function DictionaryEntry(entry) {
       ) : (
         <>
           <div>{entry.accents}</div>
-          {entry.japaneseGlosses.concat(entry.englishGlosses).map((gloss, i) => (
-            <div key={i}>
-                {gloss}
-            </div>
-          ))}
+          {entry.japaneseGlosses
+            .concat(entry.englishGlosses)
+            .map((gloss, i) => (
+              <div key={i}>{gloss}</div>
+            ))}
         </>
       )}
     </>
