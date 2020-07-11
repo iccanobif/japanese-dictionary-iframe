@@ -11,7 +11,7 @@
     z-index: -1;
 }
 
-#dictionary
+/* #dictionary
 {
     position: fixed;
     top: 50%;
@@ -20,7 +20,7 @@
     height: 50%;
     overflow: auto;
     border-top: white solid 2px;
-}
+} */
 
 .floating-button
 {

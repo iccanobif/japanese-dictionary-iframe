@@ -16,6 +16,13 @@ class App extends Component {
       ebookText: null,
       dictionaryData: [],
     };
+
+    window.addEventListener("message", (msg) => {
+      if (msg.source === window) return; // ignore react-devtools messages
+
+      console.log(msg);
+      // alert(msg)
+    });
   }
 
   updateUrl = (ev) => {
@@ -30,14 +37,17 @@ class App extends Component {
 
   fetchDictionaryData = async (text, offset) => {
     const response = await fetch(
-      "https://japdictapi.herokuapp.com/word/" + encodeURIComponent(text) + "/" + offset
+      "https://japdictapi.herokuapp.com/word/" +
+        encodeURIComponent(text) +
+        "/" +
+        offset
     );
     this.setState({
       dictionaryData: await response.json(),
     });
   };
 
-  render() {
+  renderWithReader() {
     switch (this.state.state) {
       case STATES.EBOOK_TO_BE_SELECTED:
         return (
@@ -63,6 +73,16 @@ class App extends Component {
       default:
         return null;
     }
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Dictionary
+          dictionaryQueryResults={this.state.dictionaryData}
+        ></Dictionary>
+      </div>
+    );
   }
 }
 
