@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import "./App.css";
 import Dictionary from "./Dictionary";
 import EbookViewer from "./EbookViewer";
+import { connect } from "react-redux";
+import { startQuery } from "./actions"
 
 const STATES = {
   EBOOK_TO_BE_SELECTED: 0,
   EBOOK_LOADED: 2,
 };
 
-class App extends Component {
+class AppPresentation extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,6 +21,8 @@ class App extends Component {
   }
 
   handleMessages = (msg) => {
+    // alert(JSON.stringify(msg.data))
+    if (msg.source === window) return; // ignore react-devtools messages
     this.setState({ dictionaryData: msg.data });
   };
 
@@ -90,4 +94,19 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state)
+{
+  return {
+    // someprop: state.somestate
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onNewInputSelected: (text, position) => {
+      dispatch(startQuery(text, position))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppPresentation);
