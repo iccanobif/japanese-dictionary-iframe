@@ -23,7 +23,8 @@ class AppPresentation extends Component {
   handleMessages = (msg) => {
     // alert(JSON.stringify(msg.data))
     if (msg.source === window) return; // ignore react-devtools messages
-    this.setState({ dictionaryData: msg.data });
+    // this.setState({ dictionaryData: msg.data });
+    this.props.onNewInputSelected(msg.data.text, msg.data.offset)
   };
 
   componentDidMount() {
@@ -87,7 +88,7 @@ class AppPresentation extends Component {
     return (
       <div className="App">
         <Dictionary
-          dictionaryQueryResults={this.state.dictionaryData}
+          dictionaryQueryResults={this.props.queryResults}
         ></Dictionary>
       </div>
     );
@@ -97,9 +98,10 @@ class AppPresentation extends Component {
 function mapStateToProps(state)
 {
   return {
-    // someprop: state.somestate
+    queryResults: state.queryResults
   }
 }
+
 
 function mapDispatchToProps(dispatch) {
   return {
