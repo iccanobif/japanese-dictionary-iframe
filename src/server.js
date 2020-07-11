@@ -3,6 +3,9 @@ const path = require('path');
 const port = process.env.PORT || 8080;
 const app = express();
 
+app.use((req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*")
+})
 app.use(express.static("build"));
 
 app.get('*', (req, res) => {
