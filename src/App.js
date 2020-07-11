@@ -16,13 +16,17 @@ class App extends Component {
       ebookText: null,
       dictionaryData: [],
     };
+  }
 
-    window.addEventListener("message", (msg) => {
-      if (msg.source === window) return; // ignore react-devtools messages
+  handleMessages = (msg) => {
+    this.setState({ dictionaryData: msg.data });
+  };
 
-      console.log(msg);
-      // alert(msg)
-    });
+  componentDidMount() {
+    window.addEventListener("message", this.handleMessages);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("message", this.handleMessages);
   }
 
   updateUrl = (ev) => {
