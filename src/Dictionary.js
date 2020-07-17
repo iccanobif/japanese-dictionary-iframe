@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 
 export default function Dictionary(props) {
-  const { dictionaryQueryResults } = props;
+  const { dictionaryQueryResults, isQueryRunning } = props;
+  if (isQueryRunning)
+    return <>読込中</>
 
   return (
-    <div id="dictionary">
       <ul>
         {dictionaryQueryResults.map((w, i) => (
           <React.Fragment key={i}><Word word={w} /></React.Fragment>
         ))}
       </ul>
-    </div>
   );
 }
 
