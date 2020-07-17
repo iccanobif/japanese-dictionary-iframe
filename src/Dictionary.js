@@ -7,29 +7,31 @@ export default function Dictionary(props) {
     <div id="dictionary">
       <ul>
         {dictionaryQueryResults.map((w, i) => (
-          <React.Fragment key={i}>{Word(w, i)}</React.Fragment>
+          <React.Fragment key={i}><Word word={w} /></React.Fragment>
         ))}
       </ul>
     </div>
   );
 }
 
-function Word(wordData) {
+function Word(props) {
+  const word = props.word
   return (
     <>
-      {wordData.dictionaryEntries.map((entry, i) => (
+      {word.dictionaryEntries.map((entry, i) => (
         <li key={i} style={{ listStyleType: "none" }}>
-          {DictionaryEntry(entry)}
+          <DictionaryEntry entry={entry} />
         </li>
       ))}
     </>
   );
 }
 
-function DictionaryEntry(entry) {
+function DictionaryEntry(props) {
+  const entry = props.entry
   const [isExpanded, setIsExpanded] = useState(false);
 
-  return (
+  return ( 
     <>
       <button onClick={() => setIsExpanded(!isExpanded)}>
         {isExpanded ? "-" : "+"}
