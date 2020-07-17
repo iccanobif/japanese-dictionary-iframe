@@ -36,7 +36,8 @@ function DictionaryEntry(props) {
       <button onClick={() => setIsExpanded(!isExpanded)}>
         {isExpanded ? "-" : "+"}
       </button>
-      {entry.lemmas.map((l) => l)}
+      {entry.lemmas}
+      {entry.accents}
       {!isExpanded ? (
         <></>
       ) : (
