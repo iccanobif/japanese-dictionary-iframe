@@ -9,16 +9,18 @@ export default function Dictionary(props) {
     return <>何かを選択してください</>
 
   return (
-      <ul>
-        {dictionaryQueryResults.map((w, i) => (
-          <React.Fragment key={i}><Word word={w} /></React.Fragment>
-        ))}
-      </ul>
+    <ul>
+      {dictionaryQueryResults.map((w, i) => (
+        <React.Fragment key={i}>
+          <Word word={w} />
+        </React.Fragment>
+      ))}
+    </ul>
   );
 }
 
 function Word(props) {
-  const word = props.word
+  const word = props.word;
   return (
     <>
       {word.dictionaryEntries.map((entry, i) => (
@@ -31,10 +33,10 @@ function Word(props) {
 }
 
 function DictionaryEntry(props) {
-  const entry = props.entry
+  const entry = props.entry;
   const [isExpanded, setIsExpanded] = useState(false);
 
-  return ( 
+  return (
     <>
       <button onClick={() => setIsExpanded(!isExpanded)} className="link-button">
         {entry.lemmas}
