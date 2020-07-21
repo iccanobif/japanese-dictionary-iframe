@@ -4,6 +4,9 @@ export default function Dictionary(props) {
   const { dictionaryQueryResults, isQueryRunning } = props;
   if (isQueryRunning)
     return <>読込中</>
+  
+  if (dictionaryQueryResults.length === 0)
+    return <>何かを選択してください</>
 
   return (
       <ul>
@@ -33,16 +36,14 @@ function DictionaryEntry(props) {
 
   return ( 
     <>
-      <button onClick={() => setIsExpanded(!isExpanded)}>
-        {isExpanded ? "-" : "+"}
+      <button onClick={() => setIsExpanded(!isExpanded)} className="link-button">
+        {entry.lemmas}
+        {entry.accents}
       </button>
-      {entry.lemmas}
-      {entry.accents}
       {!isExpanded ? (
         <></>
       ) : (
         <>
-          <div>{entry.accents}</div>
           {entry.japaneseGlosses
             .concat(entry.englishGlosses)
             .map((gloss, i) => (

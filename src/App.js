@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
 import Dictionary from "./Dictionary";
-import EbookViewer from "./EbookViewer";
 import { connect } from "react-redux";
 import { startQuery } from "./actions"
 
@@ -21,9 +20,7 @@ class AppPresentation extends Component {
   }
 
   handleMessages = (msg) => {
-    // alert(JSON.stringify(msg.data))
     if (msg.source === window) return; // ignore react-devtools messages
-    // this.setState({ dictionaryData: msg.data });
     this.props.onNewInputSelected(msg.data.text, msg.data.offset)
   };
 
@@ -32,56 +29,6 @@ class AppPresentation extends Component {
   }
   componentWillUnmount() {
     window.removeEventListener("message", this.handleMessages);
-  }
-
-  updateUrl = (ev) => {
-    const file = ev.target.files[0];
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      this.setState({ ebookText: e.target.result, state: STATES.EBOOK_LOADED });
-    };
-    reader.readAsText(file);
-  };
-
-  fetchDictionaryData = async (text, offset) => {
-    const response = await fetch(
-      "https://japdictapi.herokuapp.com/word/" +
-        encodeURIComponent(text) +
-        "/" +
-        offset
-    );
-    this.setState({
-      dictionaryData: await response.json(),
-    });
-  };
-
-  renderWithReader() {
-    switch (this.state.state) {
-      case STATES.EBOOK_TO_BE_SELECTED:
-        return (
-          <div className="App">
-            Url: <input type="file" onChange={this.updateUrl}></input>{" "}
-            <button onClick={this.loadEbook}>go</button>
-          </div>
-        );
-      case STATES.LOADING_EBOOK:
-        return <div className="App">loading...</div>;
-      case STATES.EBOOK_LOADED:
-        return (
-          <div className="App">
-            <EbookViewer
-              ebookText={this.state.ebookText}
-              wordSelected={this.fetchDictionaryData}
-            ></EbookViewer>
-            <Dictionary
-              dictionaryQueryResults={this.state.dictionaryData}
-            ></Dictionary>
-          </div>
-        );
-      default:
-        return null;
-    }
   }
 
   render() {
