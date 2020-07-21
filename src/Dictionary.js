@@ -8,11 +8,13 @@ export default function Dictionary(props) {
   if (dictionaryQueryResults.length === 0)
     return <>何かを選択してください</>
 
+  const expandedByDefault = dictionaryQueryResults.length === 1 && dictionaryQueryResults[0].dictionaryEntries.length === 1
+
   return (
     <ul>
       {dictionaryQueryResults.map((w, i) => (
         <React.Fragment key={i}>
-          <Word word={w} />
+          <Word word={w} expandedByDefault={expandedByDefault} />
         </React.Fragment>
       ))}
     </ul>
@@ -20,12 +22,13 @@ export default function Dictionary(props) {
 }
 
 function Word(props) {
-  const word = props.word;
+  const { word, expandedByDefault } = props;
+
   return (
     <>
       {word.dictionaryEntries.map((entry, i) => (
         <li key={i} style={{ listStyleType: "none" }}>
-          <DictionaryEntry entry={entry} />
+          <DictionaryEntry entry={entry} expandedByDefault={expandedByDefault} />
         </li>
       ))}
     </>
@@ -33,8 +36,8 @@ function Word(props) {
 }
 
 function DictionaryEntry(props) {
-  const entry = props.entry;
-  const [isExpanded, setIsExpanded] = useState(false);
+  const { entry, expandedByDefault } = props;
+  const [isExpanded, setIsExpanded] = useState(expandedByDefault);
 
   return (
     <>
