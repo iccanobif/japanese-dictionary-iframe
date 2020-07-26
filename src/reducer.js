@@ -9,6 +9,7 @@ const initialState = {
   queriedText: null,
   queriedOffset: null,
   queryResults: [],
+  queryError: null,
 };
 
 export default function mainReducer(state = initialState, action) {
@@ -25,10 +26,14 @@ export default function mainReducer(state = initialState, action) {
       return Object.assign({}, state, {
         isQueryRunning: false,
         queryResults: action.results,
+        queryError: null,
       });
     case QUERY_RESULTS_RECEIVED_FAIL:
-      // TODO
-      return state;
+      return Object.assign({}, state, {
+        isQueryRunning: false,
+        queryResults: [],
+        queryError: action.queryError
+      });
     default:
       return state;
   }

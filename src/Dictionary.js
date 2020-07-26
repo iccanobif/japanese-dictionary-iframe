@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 
 export default function Dictionary(props) {
-  const { dictionaryQueryResults, isQueryRunning } = props;
-  if (isQueryRunning)
-    return <>読込中</>
+  const { dictionaryQueryResults, isQueryRunning, queryError } = props;
+  if (isQueryRunning) return <>読込中</>;
+  if (queryError) return <>{queryError}</>;
   
-  if (dictionaryQueryResults.length === 0)
-    return <>何かを選択してください</>
+  if (dictionaryQueryResults.length === 0) return <>何かを選択してください</>;
 
-  const expandedByDefault = dictionaryQueryResults.length === 1 && dictionaryQueryResults[0].dictionaryEntries.length === 1
+  const expandedByDefault =
+    dictionaryQueryResults.length === 1 &&
+    dictionaryQueryResults[0].dictionaryEntries.length === 1;
 
   return (
     <ul>
@@ -28,7 +29,10 @@ function Word(props) {
     <>
       {word.dictionaryEntries.map((entry, i) => (
         <li key={i} style={{ listStyleType: "none" }}>
-          <DictionaryEntry entry={entry} expandedByDefault={expandedByDefault} />
+          <DictionaryEntry
+            entry={entry}
+            expandedByDefault={expandedByDefault}
+          />
         </li>
       ))}
     </>
@@ -41,7 +45,10 @@ function DictionaryEntry(props) {
 
   return (
     <>
-      <button onClick={() => setIsExpanded(!isExpanded)} className="link-button">
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="link-button"
+      >
         {entry.lemmas}
         {entry.accents}
       </button>

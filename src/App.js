@@ -36,6 +36,7 @@ class AppPresentation extends Component {
       <div className="App">
         <Dictionary
           dictionaryQueryResults={this.props.queryResults}
+          queryError={this.props.queryError}
           isQueryRunning={this.props.isQueryRunning}
         ></Dictionary>
       </div>
@@ -48,6 +49,7 @@ function mapStateToProps(state)
   return {
     queryResults: state.queryResults,
     isQueryRunning: state.isQueryRunning,
+    queryError: state.queryError,
   }
 }
 
