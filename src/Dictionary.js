@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 
 export default function Dictionary(props) {
-  const { dictionaryQueryResults, isQueryRunning, queryError } = props;
-  if (isQueryRunning) return <>読込中</>;
-  if (queryError) return <>{queryError}</>;
+  const { dictionaryQueryResults } = props;
 
   if (dictionaryQueryResults.length === 0) return <>何かを選択してください</>;
 
@@ -16,17 +14,17 @@ export default function Dictionary(props) {
 
   for (let i = 0; i < dictionaryQueryResults.length; i++) {
     fragments.push(
-      (<React.Fragment key={i}>
+      <React.Fragment key={i}>
         <EntriesForWord
           word={dictionaryQueryResults[i]}
           expandedByDefault={expandedByDefault}
           previousEntriesCount={entriesCount}
         />
-      </React.Fragment>)
+      </React.Fragment>
     );
-    entriesCount += dictionaryQueryResults[i].dictionaryEntries.length
+    entriesCount += dictionaryQueryResults[i].dictionaryEntries.length;
   }
-  
+
   return <ul>{fragments}</ul>;
 }
 

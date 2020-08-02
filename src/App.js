@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import Dictionary from "./Dictionary";
 import { connect } from "react-redux";
-import { startQuery } from "./actions"
+import { startQuery } from "./actions";
 
 const STATES = {
   EBOOK_TO_BE_SELECTED: 0,
@@ -21,7 +21,7 @@ class AppPresentation extends Component {
 
   handleMessages = (msg) => {
     if (msg.source === window) return; // ignore react-devtools messages
-    this.props.onNewInputSelected(msg.data.text, msg.data.offset)
+    this.props.onNewInputSelected(msg.data.text, msg.data.offset);
   };
 
   componentDidMount() {
@@ -32,33 +32,30 @@ class AppPresentation extends Component {
   }
 
   render() {
+    if (this.props.isQueryRunning) return <>読込中</>;
+
+    if (this.props.queryError) return <>{this.props.queryError}</>;
+
     return (
-      <div className="App">
-        <Dictionary
-          dictionaryQueryResults={this.props.queryResults}
-          queryError={this.props.queryError}
-          isQueryRunning={this.props.isQueryRunning}
-        ></Dictionary>
-      </div>
+      <Dictionary dictionaryQueryResults={this.props.queryResults}></Dictionary>
     );
   }
 }
 
-function mapStateToProps(state)
-{
+function mapStateToProps(state) {
   return {
     queryResults: state.queryResults,
     isQueryRunning: state.isQueryRunning,
     queryError: state.queryError,
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     onNewInputSelected: (text, position) => {
-      dispatch(startQuery(text, position))
-    }
-  }
+      dispatch(startQuery(text, position));
+    },
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppPresentation);
