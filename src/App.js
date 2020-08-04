@@ -2,23 +2,9 @@ import React, { Component } from "react";
 import "./App.css";
 import Dictionary from "./Dictionary";
 import { connect } from "react-redux";
-import { startQuery } from "./actions";
-
-const STATES = {
-  EBOOK_TO_BE_SELECTED: 0,
-  EBOOK_LOADED: 2,
-};
+import { startQuery, changeSelectedQuery } from "./actions";
 
 class AppPresentation extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      state: STATES.EBOOK_TO_BE_SELECTED,
-      ebookText: null,
-      dictionaryData: [],
-    };
-  }
-
   handleMessages = (msg) => {
     if (msg.source === window) return; // ignore react-devtools messages
     this.props.onNewInputSelected(msg.data.text, msg.data.offset);
@@ -27,6 +13,7 @@ class AppPresentation extends Component {
   componentDidMount() {
     window.addEventListener("message", this.handleMessages);
   }
+
   componentWillUnmount() {
     window.removeEventListener("message", this.handleMessages);
   }
@@ -36,24 +23,52 @@ class AppPresentation extends Component {
 
     if (this.props.queryError) return <>{this.props.queryError}</>;
 
+    if (this.props.queries.length === 0) return <></>;
+
+    const navButtons =
+      this.props.queries.length === 1 ? (
+        <></>
+      ) : (
+        <nav>
+          {this.props.queries.map((q, i) => (
+            <button onClick={() => this.props.onSelectedQueryChanged(i)}>〇</button>
+          ))}
+        </nav>
+      );
+
     return (
-      <Dictionary dictionaryQueryResults={this.props.queryResults}></Dictionary>
+      <>
+        {navButtons}{" "}
+        <Dictionary
+          dictionaryQueryResults={
+            this.props.queries[this.props.selectedQueryIndex].queryResults
+          }
+          onLemmaClick={(text, offset) => this.props.onLemmaClick(text, offset)}
+        ></Dictionary>
+      </>
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    queryResults: state.queryResults,
+    queries: state.queries,
     isQueryRunning: state.isQueryRunning,
-    queryError: state.queryError,
+    queryError: null, // TODO
+    selectedQueryIndex: state.selectedQueryIndex,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     onNewInputSelected: (text, position) => {
-      dispatch(startQuery(text, position));
+      dispatch(startQuery(text, position, false));
+    },
+    onLemmaClick: (text, position) => {
+      dispatch(startQuery(text, position, true));
+    },
+    onSelectedQueryChanged: (index) => {
+      dispatch(changeSelectedQuery(index));
     },
   };
 }

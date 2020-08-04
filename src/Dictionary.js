@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function Dictionary(props) {
-  const { dictionaryQueryResults } = props;
+  const { dictionaryQueryResults, onLemmaClick } = props;
 
   if (dictionaryQueryResults.length === 0) return <>何かを選択してください</>;
 
@@ -19,6 +19,7 @@ export default function Dictionary(props) {
           word={dictionaryQueryResults[i]}
           expandedByDefault={expandedByDefault}
           previousEntriesCount={entriesCount}
+          onLemmaClick={onLemmaClick}
         />
       </React.Fragment>
     );
@@ -29,7 +30,12 @@ export default function Dictionary(props) {
 }
 
 function EntriesForWord(props) {
-  const { word, expandedByDefault, previousEntriesCount } = props;
+  const {
+    word,
+    expandedByDefault,
+    previousEntriesCount,
+    onLemmaClick,
+  } = props;
 
   return (
     <>
@@ -45,6 +51,7 @@ function EntriesForWord(props) {
             <DictionaryEntry
               entry={entry}
               expandedByDefault={expandedByDefault}
+              onLemmaClick={onLemmaClick}
             />
           </li>
         );
@@ -54,8 +61,25 @@ function EntriesForWord(props) {
 }
 
 function DictionaryEntry(props) {
-  const { entry, expandedByDefault } = props;
+  const { entry, expandedByDefault, onLemmaClick } = props;
   const [isExpanded, setIsExpanded] = useState(expandedByDefault);
+
+  const handleClick = (ev) => {
+    const selection = window.getSelection();
+    if (!selection.isCollapsed) return;
+
+    let text = selection.anchorNode.textContent;
+    let offset = selection.anchorOffset;
+
+    if (offset > 50) {
+      text = text.substring(offset - 25, offset + 25);
+      offset = 25;
+    } else {
+      text = text.substring(0, 100);
+    }
+
+    onLemmaClick(text, offset);
+  };
 
   return (
     <div>
@@ -69,13 +93,13 @@ function DictionaryEntry(props) {
       {!isExpanded ? (
         <></>
       ) : (
-        <>
+        <div onClick={handleClick}>
           {entry.japaneseGlosses
             .concat(entry.englishGlosses)
             .map((gloss, i) => (
               <div key={i}>{gloss}</div>
             ))}
-        </>
+        </div>
       )}
     </div>
   );

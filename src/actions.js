@@ -1,16 +1,20 @@
 export const START_QUERY = "START_QUERY";
-export const QUERY_RESULTS_RECEIVED_OK = "QUERY_RESULTS_RECEIVED_OK";
-export const QUERY_RESULTS_RECEIVED_FAIL = "QUERY_RESULTS_RECEIVED_FAIL";
+export const START_SUB_QUERY = "START_SUB_QUERY";
+export const RESULTS_RECEIVED_OK = "QUERY_RESULTS_RECEIVED_OK";
+export const RESULTS_RECEIVED_FAIL = "QUERY_RESULTS_RECEIVED_FAIL";
+export const CHANGE_SELECTED_QUERY = "CHANGE_SELECTED_QUERY";
 
-export function startQuery(text, offset) {
+export function startQuery(text, offset, isSubquery) {
   return async (dispatch, getState) => {
-    try {
-      dispatch({
-        type: START_QUERY,
-        text,
-        offset,
-      });
+    dispatch({
+      type: isSubquery ? START_SUB_QUERY : START_QUERY,
+      text,
+      offset,
+    });
 
+    const queryIndex = getState().lastQueryIndex;
+
+    try {
       const response = await fetch(
         "https://japdictapi.herokuapp.com/word/" +
           encodeURIComponent(text) +
@@ -19,13 +23,25 @@ export function startQuery(text, offset) {
       );
 
       dispatch({
-        type: QUERY_RESULTS_RECEIVED_OK,
+        type: RESULTS_RECEIVED_OK,
         text,
         offset,
+        queryIndex,
         results: await response.json(),
       });
     } catch (queryError) {
-      dispatch({ type: QUERY_RESULTS_RECEIVED_FAIL, queryError: queryError.message });
+      dispatch({
+        type: RESULTS_RECEIVED_FAIL,
+        queryIndex,
+        queryError: queryError.message,
+      });
     }
+  };
+}
+
+export function changeSelectedQuery(index) {
+  return {
+    type: CHANGE_SELECTED_QUERY,
+    index,
   };
 }
