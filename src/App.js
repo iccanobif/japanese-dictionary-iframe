@@ -23,7 +23,7 @@ class AppPresentation extends Component {
 
     if (this.props.queryError) return <>{this.props.queryError}</>;
 
-    if (this.props.queries.length === 0) return <></>;
+    if (this.props.queries.length === 0) return <>何かを選択してください</>;
 
     const navButtons =
       this.props.queries.length === 1 ? (
