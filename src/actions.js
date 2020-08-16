@@ -16,10 +16,7 @@ export function startQuery(text, offset, isSubquery) {
 
     try {
       const response = await fetch(
-        "https://japdictapi.herokuapp.com/word/" +
-          encodeURIComponent(text) +
-          "/" +
-          offset
+        process.env.REACT_APP_API_URL + "/word/" + encodeURIComponent(text) + "/" + offset
       );
 
       dispatch({

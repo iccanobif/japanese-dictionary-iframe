@@ -87,7 +87,7 @@ function DictionaryEntry(props) {
         onClick={() => setIsExpanded(!isExpanded)}
         className="link-button"
       >
-        {entry.lemmas}
+        {entry.lemmas.map(l => l.kanji + "（" + l.reading + "）")}
         {entry.accents}
       </button>
       {!isExpanded ? (
