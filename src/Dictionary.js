@@ -30,12 +30,7 @@ export default function Dictionary(props) {
 }
 
 function EntriesForWord(props) {
-  const {
-    word,
-    expandedByDefault,
-    previousEntriesCount,
-    onLemmaClick,
-  } = props;
+  const { word, expandedByDefault, previousEntriesCount, onLemmaClick } = props;
 
   return (
     <>
@@ -87,8 +82,13 @@ function DictionaryEntry(props) {
         onClick={() => setIsExpanded(!isExpanded)}
         className="link-button"
       >
-        {entry.lemmas.map(l => l.kanji + "（" + l.reading + "）")}
-        {entry.accents}
+        {entry.lemmas.map((l) => (
+          <>
+            <span className="kanji">{l.kanji}</span>
+            <span className="reading">（{l.reading}）</span>
+          </>
+        ))}
+        <span className="accent">{entry.accents}</span>
       </button>
       {!isExpanded ? (
         <></>

@@ -35,3 +35,20 @@ ul {
 {
   background-color: #3f3f3f;
 }
+
+.reading
+{
+  font-size: 16px;
+}
+
+.kanji
+{
+  /* color: #C73E1D; */
+  color: #C59849;
+}
+
+.accent
+{
+  font-size: 16px;
+  font-style: italic;
+}
