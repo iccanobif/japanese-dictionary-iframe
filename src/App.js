@@ -19,11 +19,14 @@ class AppPresentation extends Component {
   }
 
   render() {
-    if (this.props.isQueryRunning) return <>読込中</>;
+    if (this.props.isQueryRunning)
+      return <div className="full-page-message">読込中</div>;
 
-    if (this.props.queryError) return <>{this.props.queryError}</>;
+    if (this.props.queryError)
+      return <div className="full-page-message">{this.props.queryError}</div>;
 
-    if (this.props.queries.length === 0) return <>何かを選択してください</>;
+    if (this.props.queries.length === 0)
+      return <div className="full-page-message">何かを選択してください</div>;
 
     const navButtons =
       this.props.queries.length === 1 ? (
@@ -31,7 +34,9 @@ class AppPresentation extends Component {
       ) : (
         <nav>
           {this.props.queries.map((q, i) => (
-            <button onClick={() => this.props.onSelectedQueryChanged(i)}>〇</button>
+            <button onClick={() => this.props.onSelectedQueryChanged(i)}>
+              〇
+            </button>
           ))}
         </nav>
       );

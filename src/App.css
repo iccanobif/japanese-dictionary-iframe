@@ -36,6 +36,11 @@ ul {
   margin: 0px;
 }
 
+li {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .alternate-dictionary-entry
 {
   background-color: #3f3f3f;
@@ -56,4 +61,14 @@ ul {
 {
   font-size: 16px;
   font-style: italic;
+}
+
+.full-page-message
+{
+  margin: 0 10px;
+}
+
+nav
+{
+  margin: 0 10px;
 }
