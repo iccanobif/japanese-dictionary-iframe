@@ -80,7 +80,7 @@ function DictionaryEntry(props) {
     <div>
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="link-button"
+        className="link-button entry-definition"
       >
         {entry.lemmas.map((l) => (
           <>
