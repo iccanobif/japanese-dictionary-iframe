@@ -7,9 +7,8 @@ export default function Dictionary(props) {
 
   const expandedByDefault =
     dictionaryQueryResults.length === 1 &&
-    dictionaryQueryResults[0].dictionaryEntries.length === 1;
+    dictionaryQueryResults[0].length === 1;
 
-  let entriesCount = 0;
   const fragments = [];
 
   for (let i = 0; i < dictionaryQueryResults.length; i++) {
@@ -18,39 +17,34 @@ export default function Dictionary(props) {
         <EntriesForWord
           word={dictionaryQueryResults[i]}
           expandedByDefault={expandedByDefault}
-          previousEntriesCount={entriesCount}
+          wordIndex={i}
           onLemmaClick={onLemmaClick}
         />
       </React.Fragment>
     );
-    entriesCount += dictionaryQueryResults[i].dictionaryEntries.length;
   }
 
   return <ul>{fragments}</ul>;
 }
 
 function EntriesForWord(props) {
-  const { word, expandedByDefault, previousEntriesCount, onLemmaClick } = props;
-
+  const { word, expandedByDefault, wordIndex, onLemmaClick } = props;
+  
+  const alternateColor = wordIndex % 2;
   return (
     <>
-      {word.dictionaryEntries.map((entry, i) => {
-        const alternateColor = (previousEntriesCount + i) % 2;
 
-        return (
           <li
-            key={i}
+            key={wordIndex}
             style={{ listStyleType: "none" }}
             className={alternateColor ? "alternate-dictionary-entry" : ""}
           >
             <DictionaryEntry
-              entry={entry}
+              entry={word}
               expandedByDefault={expandedByDefault}
               onLemmaClick={onLemmaClick}
             />
           </li>
-        );
-      })}
     </>
   );
 }
