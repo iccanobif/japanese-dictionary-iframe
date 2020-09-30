@@ -1,22 +1,20 @@
 import React, { useState } from "react";
 
-export default function Dictionary(props) {
+export default function Dictionary(props)
+{
   const { dictionaryQueryResults, onLemmaClick } = props;
 
   if (dictionaryQueryResults.length === 0) return <>何かを選択してください</>;
 
-  const expandedByDefault =
-    dictionaryQueryResults.length === 1 &&
-    dictionaryQueryResults[0].length === 1;
-
   const fragments = [];
 
-  for (let i = 0; i < dictionaryQueryResults.length; i++) {
+  for (let i = 0; i < dictionaryQueryResults.length; i++)
+  {
     fragments.push(
       <React.Fragment key={i}>
         <EntriesForWord
           word={dictionaryQueryResults[i]}
-          expandedByDefault={expandedByDefault}
+          expandedByDefault={i === 0}
           wordIndex={i}
           onLemmaClick={onLemmaClick}
         />
@@ -27,43 +25,47 @@ export default function Dictionary(props) {
   return <ul>{fragments}</ul>;
 }
 
-function EntriesForWord(props) {
+function EntriesForWord(props)
+{
   const { word, expandedByDefault, wordIndex, onLemmaClick } = props;
-  
+
   const alternateColor = wordIndex % 2;
   return (
     <>
-
-          <li
-            key={wordIndex}
-            style={{ listStyleType: "none" }}
-            className={alternateColor ? "alternate-dictionary-entry" : ""}
-          >
-            <DictionaryEntry
-              entry={word}
-              expandedByDefault={expandedByDefault}
-              onLemmaClick={onLemmaClick}
-            />
-          </li>
+      <li
+        key={wordIndex}
+        style={{ listStyleType: "none" }}
+        className={alternateColor ? "alternate-dictionary-entry" : ""}
+      >
+        <DictionaryEntry
+          entry={word}
+          expandedByDefault={expandedByDefault}
+          onLemmaClick={onLemmaClick}
+        />
+      </li>
     </>
   );
 }
 
-function DictionaryEntry(props) {
+function DictionaryEntry(props)
+{
   const { entry, expandedByDefault, onLemmaClick } = props;
   const [isExpanded, setIsExpanded] = useState(expandedByDefault);
 
-  const handleClick = (ev) => {
+  const handleClick = (ev) =>
+  {
     const selection = window.getSelection();
     if (!selection.isCollapsed) return;
 
     let text = selection.anchorNode.textContent;
     let offset = selection.anchorOffset;
 
-    if (offset > 50) {
+    if (offset > 50)
+    {
       text = text.substring(offset - 25, offset + 25);
       offset = 25;
-    } else {
+    } else
+    {
       text = text.substring(0, 100);
     }
 
@@ -87,14 +89,14 @@ function DictionaryEntry(props) {
       {!isExpanded ? (
         <></>
       ) : (
-        <div onClick={handleClick}>
-          {entry.japaneseGlosses
-            .concat(entry.englishGlosses)
-            .map((gloss, i) => (
-              <div key={i}>{gloss}</div>
-            ))}
-        </div>
-      )}
+          <div onClick={handleClick}>
+            {entry.japaneseGlosses
+              .concat(entry.englishGlosses)
+              .map((gloss, i) => (
+                <div key={i}>{gloss}</div>
+              ))}
+          </div>
+        )}
     </div>
   );
 }
