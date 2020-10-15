@@ -72,3 +72,10 @@ nav
 {
   margin: 0 10px;
 }
+
+nav button {
+  height: 2em;
+  background-color: #C59849;
+  margin-right: 2px;
+  border: solid white 1px;
+}

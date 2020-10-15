@@ -35,7 +35,8 @@ class AppPresentation extends Component {
         <nav>
           {this.props.queries.map((q, i) => (
             <button onClick={() => this.props.onSelectedQueryChanged(i)}>
-              〇
+              { (q.queryResults[0]
+                && q.queryResults[0].lemmas[0].kanji.charAt(0)) || "Ｘ" }
             </button>
           ))}
         </nav>
